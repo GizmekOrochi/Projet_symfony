@@ -23,10 +23,7 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', [
-            'last_username' => $lastUsername,
-            'error' => $error,
-        ]);
+        return $this->render('security/login.html.twig');
     }
 
     #[Route(path: '/security/logout', name: 'app_logout')]
@@ -45,6 +42,9 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // setRole USER
+            // hashere le mdp
+            $user->setRoles(['ROLE_CLIENT']);
             $em->persist($user);
             $em->flush();
 
@@ -52,12 +52,14 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        if ($form->isSubmitted() && !$form->isValid()) {
+        if ($form->isSubmitted()) {
             $this->addFlash('error', 'There were errors in your submission.');
         }
 
-        return $this->render('security/create_account.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        $args = array(
+            'myform' => $form,
+        );
+        dump($args);
+        return $this->render('security/create_account.html.twig', $args);
     }
 }
