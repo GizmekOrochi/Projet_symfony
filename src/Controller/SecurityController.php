@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -23,7 +24,10 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig');
+        return $this->render('security/login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
+        ]);
     }
 
     #[Route(path: '/security/logout', name: 'app_logout')]
@@ -33,7 +37,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/security/create-account', name: 'app_create_account')]
-    public function createAccount(Request $request, EntityManagerInterface $em): Response
+    public function createAccount(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
         $form = $this->createForm(CreateAccountType::class, $user);
@@ -45,6 +49,8 @@ class SecurityController extends AbstractController
             // setRole USER
             // hashere le mdp
             $user->setRoles(['ROLE_CLIENT']);
+            $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($hashedPassword);
             $em->persist($user);
             $em->flush();
 
