@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add New Football Player{% endblock %}
+
+{% block body %}
+    <h1>Add a New Football Player</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary" type="submit">Add Football Player</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_football_players') }}">Back to Players List</a>
+{% endblock %}

@@ -1,0 +1,117 @@
+/* public/css/style.css */
+
+/* Global styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f8f9fa;
+}
+
+.container {
+    padding: 2rem;
+}
+
+/* Header / Top Navigation */
+.top-nav {
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.nav-left a,
+.nav-right a,
+.nav-left summary {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 2rem;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.nav-left a:hover,
+.nav-right a:hover,
+.nav-left summary:hover {
+    color: #ffd700;
+}
+
+.nav-right a {
+    margin-right: 0;
+}
+
+/* Collapsible menu for products */
+details.collapsible-menu summary {
+    cursor: pointer;
+    padding: 10px;
+    background: transparent;
+    border: none;
+    outline: none;
+    display: inline-block;
+    position: relative;
+}
+
+/* Remove default marker */
+details.collapsible-menu summary::-webkit-details-marker,
+details.collapsible-menu summary::marker {
+    display: none;
+}
+
+/* Custom caret icon */
+details.collapsible-menu summary::after {
+    content: "\25BC"; /* down arrow */
+    margin-left: 0.5em;
+    font-size: 0.8em;
+    transition: transform 0.3s ease;
+}
+
+/* Rotate caret when open */
+details.collapsible-menu[open] summary::after {
+    transform: rotate(-180deg);
+}
+
+/* Dropdown content styling */
+details.collapsible-menu div {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #f0f0f0; /* grey background */
+    min-width: 200px;
+    border: 1px solid #ccc;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+details.collapsible-menu div a {
+    display: block;
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+    border-bottom: 1px solid #ddd;
+    transition: background 0.3s ease;
+}
+
+details.collapsible-menu div a:hover {
+    background: #e0e0e0;
+}
+
+details.collapsible-menu div a:last-child {
+    border-bottom: none;
+}
+
+/* Alert styles (used in base.html.twig) */
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.alert-info {
+    color: #055160;
+    background-color: #cff4fc;
+    border-color: #b6effb;
+}
