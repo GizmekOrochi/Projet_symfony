@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Player Details</h1>
+
+    <h2>{{ player.firstName }} {{ player.name }}</h2>
+
+    <ul>
+        <li><strong>Value Money:</strong> {{ player.valueMoney }}</li>
+        <li><strong>Current Club:</strong> {{ player.currentClub is not null ? player.currentClub : 'Not assigned' }}</li>
+        <li><strong>Current Role:</strong> {{ player.currentRole is not null ? player.currentRole : 'Not assigned' }}</li>
+    </ul>
+
+    <a href="{{ path('app_cart_add', { id: player.id }) }}" class="btn btn-primary">
+        Add to Cart
+    </a>
+
+    <br><br>
+    <a href="{{ path('app_football_players') }}">Back to Players List</a>
+{% endblock %}

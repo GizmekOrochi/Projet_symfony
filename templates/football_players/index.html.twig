@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Football Players</h1>
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {% if players is empty %}
+        <p>No players available.</p>
+    {% else %}
+        <table border="1" cellspacing="0" cellpadding="8">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>First Name</th>
+                <th>Value Money</th>
+                <th>Current Club</th>
+                <th>Current Role</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for player in players %}
+                <tr>
+                    <td>{{ player.name }}</td>
+                    <td>{{ player.firstName }}</td>
+                    <td>{{ player.valueMoney }}</td>
+                    <td>{{ player.currentClub is not null ? player.currentClub : 'N/A' }}</td>
+                    <td>{{ player.currentRole is not null ? player.currentRole : 'N/A' }}</td>
+                    <td>
+                        <a href="{{ path('app_football_player_show', { id: player.id }) }}">View Details</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

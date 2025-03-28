@@ -46,8 +46,14 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // setRole USER
-            // hashere le mdp
+            $existingUser = $em->getRepository(User::class)->findOneBy(['login' => $user->getLogin()]);
+            if ($existingUser) {
+                $this->addFlash('error', 'The login is already in use. Please choose a different one.');
+                return $this->render('security/create_account.html.twig', [
+                    'myform' => $form->createView(),
+                ]);
+            }
+
             $user->setRoles(['ROLE_CLIENT']);
             $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
@@ -62,10 +68,8 @@ class SecurityController extends AbstractController
             $this->addFlash('error', 'There were errors in your submission.');
         }
 
-        $args = array(
-            'myform' => $form,
-        );
-        dump($args);
-        return $this->render('security/create_account.html.twig', $args);
+        return $this->render('security/create_account.html.twig', [
+            'myform' => $form->createView(),
+        ]);
     }
 }

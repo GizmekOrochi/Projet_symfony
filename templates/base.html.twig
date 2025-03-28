@@ -1,3 +1,4 @@
+{# templates/base.html.twig #}
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,12 @@
 {% include 'header.html.twig' %}
 
 {% block body %}
+    <div class="container" style="padding: 2rem;">
+        <h1>Welcome to Our Product Menu</h1>
+        <p>Select a category from the navigation above to start shopping.</p>
+        {# You can add additional content or promotional banners here #}
+    </div>
 {% endblock %}
 </body>
 </html>
+
