@@ -35,6 +35,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 200)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 2)]
+    private ?string $country = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -118,6 +121,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): static
+    {
+        $this->country = $country;
 
         return $this;
     }
