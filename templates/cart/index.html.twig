@@ -22,8 +22,6 @@
                 <th>Value Money</th>
                 <th>Current Club</th>
                 <th>Current Role</th>
-                <th>Quantity</th>
-                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -31,10 +29,9 @@
                 <tr>
                     <td>{{ item.product.name }}</td>
                     <td>{{ item.product.firstName }}</td>
-                    <td>{{ item.product.valueMoney }}</td>
+                    <td>{{ item.product.valueMoney }} €</td>
                     <td>{{ item.product.currentClub is not null ? item.product.currentClub : 'N/A' }}</td>
                     <td>{{ item.product.currentRole is not null ? item.product.currentRole : 'N/A' }}</td>
-                    <td>{{ item.quantity }}</td>
                     <td>
                         <a href="{{ path('app_cart_remove', { id: id }) }}">Remove</a>
                     </td>

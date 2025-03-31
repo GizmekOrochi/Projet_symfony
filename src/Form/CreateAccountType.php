@@ -13,9 +13,10 @@ class CreateAccountType extends AbstractType
     {
         $builder
             ->add('login')
+            ->add('name')
+            ->add('country')
             //->add('roles')
             ->add('password')
-            ->add('name')
         ;
     }
 

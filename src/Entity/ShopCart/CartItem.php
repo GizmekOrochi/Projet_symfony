@@ -23,8 +23,4 @@ private Cart $cart;
 #[ORM\JoinColumn(nullable: false)]
 private FootballPlayer $product;
 
-#[ORM\Column(type: "integer")]
-private int $quantity;
-
-// Getters and setters...
 }

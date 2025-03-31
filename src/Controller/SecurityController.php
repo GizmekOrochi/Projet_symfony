@@ -18,12 +18,8 @@ class SecurityController extends AbstractController
     #[Route(path: '/security/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-
-        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
@@ -42,9 +38,7 @@ class SecurityController extends AbstractController
         $user = new User();
         $form = $this->createForm(CreateAccountType::class, $user);
         $form->add('submit', SubmitType::class, ['label' => 'Create Account']);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $existingUser = $em->getRepository(User::class)->findOneBy(['login' => $user->getLogin()]);
             if ($existingUser) {
@@ -53,7 +47,6 @@ class SecurityController extends AbstractController
                     'myform' => $form->createView(),
                 ]);
             }
-
             $user->setRoles(['ROLE_CLIENT']);
             $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);

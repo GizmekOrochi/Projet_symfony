@@ -37,14 +37,14 @@ class AppFixtures extends Fixture
             [
                 'login'    => 'rita',
                 'password' => 'atir',
-                'roles'    => ['ROLE_CLIENT'],
+                'roles'    => ['ROLE_USER'],
                 'name'     => 'Rita',
                 'country'  => 'FR',
             ],
             [
                 'login'    => 'boumediene',
                 'password' => 'eneidemuob',
-                'roles'    => ['ROLE_CLIENT'],
+                'roles'    => ['ROLE_USER'],
                 'name'     => 'Boumediene',
                 'country'  => 'FR',
             ],
