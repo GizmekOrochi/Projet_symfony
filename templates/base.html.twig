@@ -16,15 +16,22 @@
 
 {% block body %}
     <div class="container">
-        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <div class="alert alert-info">
+                Welcome, Super Administrator!
+            </div>
+            <a href="{{ path('super_admin_users') }}">Manage Users</a><br>
+            <a href="{{ path('app_football_player_new') }}">Manage Football Players</a>
+        {% elseif is_granted('ROLE_ADMIN') %}
             <div class="alert alert-info">
                 Welcome, Administrator!
             </div>
-            <a href="{{ path('super_admin_users') }}">Manage Users</a>
+            <a href="{{ path('app_football_player_new') }}">Manage Football Players</a>
         {% else %}
-            <h1>Welcome "le site 1er de vente de joueur de Football"</h1>
+            <h1>Welcome to the first football player sales website!</h1>
         {% endif %}
     </div>
 {% endblock %}
+
 </body>
 </html>
