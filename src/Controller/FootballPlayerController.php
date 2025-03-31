@@ -35,7 +35,6 @@ class FootballPlayerController extends AbstractController
         ]);
     }
 
-
     #[Route(path: '/football-players/new', name: 'app_football_player_new')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
@@ -59,4 +58,29 @@ class FootballPlayerController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route(path: '/football-players/search', name: 'app_football_player_search')]
+    public function search(Request $request, EntityManagerInterface $em): Response
+    {
+        $searchQuery = $request->query->get('searchQuery');
+        if (!$searchQuery) {
+            return $this->redirectToRoute('app_football_players');
+        }
+
+        $repository = $em->getRepository(FootballPlayer::class);
+        $qb = $repository->createQueryBuilder('p');
+        $qb->where($qb->expr()->orX(
+            $qb->expr()->like('p.Name', ':searchQuery'),
+            $qb->expr()->like('p.FirstName', ':searchQuery')
+        ))
+            ->setParameter('searchQuery', '%' . $searchQuery . '%');
+
+        $players = $qb->getQuery()->getResult();
+        return $this->render('football_players/search.html.twig', [
+            'players' => $players,
+            'searchQuery' => $searchQuery,
+        ]);
+    }
+
+
 }

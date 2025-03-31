@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Football Players</h1>
+    <h1>Search Results for "{{ searchQuery }}"</h1>
 
     {# Search Bar #}
     <form method="get" action="{{ path('app_football_player_search') }}">
-        <input type="text" name="searchQuery" placeholder="Rechercher un joueur...">
+        <input type="text" name="searchQuery" placeholder="Rechercher un joueur..." value="{{ searchQuery }}">
         <button type="submit">Rechercher</button>
     </form>
 
@@ -18,7 +18,7 @@
     {% endfor %}
 
     {% if players is empty %}
-        <p>No players available.</p>
+        <p>No players found matching "{{ searchQuery }}".</p>
     {% else %}
         <table border="1" cellspacing="0" cellpadding="8">
             <thead>
