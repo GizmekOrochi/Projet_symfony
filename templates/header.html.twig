@@ -1,12 +1,29 @@
 <nav class="top-nav">
     <div class="nav-left">
         <a href="{{ path('app_accueil') }}">Menu</a>
-        <details class="collapsible-menu" style="display: inline-block; margin-right: 2rem;">
-            <summary>Thing that we sell</summary>
-            <div>
-                <a href="{{ path('app_football_players') }}">Football Players</a>
-            </div>
-        </details>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <details class="collapsible-menu" style="display: inline-block; margin-right: 2rem;">
+                <summary>Manager</summary>
+                <div>
+                    <a href="{{ path('super_admin_users') }}">Manage Users</a><br>
+                    <a href="{{ path('app_football_player_new') }}">Add a Football Players</a>
+                </div>
+            </details>
+        {% elseif is_granted('ROLE_ADMIN') %}
+                <details class="collapsible-menu" style="display: inline-block; margin-right: 2rem;">
+                    <summary>Manager</summary>
+                    <div>
+                        <a href="{{ path('app_football_player_new') }}">Add a Football Players</a>
+                    </div>
+                </details>
+        {% else %}
+            <details class="collapsible-menu" style="display: inline-block; margin-right: 2rem;">
+                <summary>Thing that we sell</summary>
+                <div>
+                    <a href="{{ path('app_football_players') }}">Football Players</a>
+                </div>
+            </details>
+        {% endif %}
         <details class="collapsible-menu" style="display: inline-block; margin-right: 2rem;">
             <summary>Links</summary>
             <div>

@@ -20,15 +20,12 @@
             <div class="alert alert-info">
                 Welcome, Super Administrator!
             </div>
-            <a href="{{ path('super_admin_users') }}">Manage Users</a><br>
-            <a href="{{ path('app_football_player_new') }}">Manage Football Players</a>
         {% elseif is_granted('ROLE_ADMIN') %}
             <div class="alert alert-info">
                 Welcome, Administrator!
             </div>
-            <a href="{{ path('app_football_player_new') }}">Manage Football Players</a>
         {% else %}
-            <h1>Welcome to the first football player sales website!</h1>
+            <h1>Welcome to the "site of vente de football player"</h1>
         {% endif %}
     </div>
 {% endblock %}
