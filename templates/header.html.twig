@@ -24,12 +24,23 @@
                 </div>
             </details>
         {% endif %}
-        <details class="collapsible-menu" style="display: inline-block; margin-right: 2rem;">
-            <summary>Links</summary>
-            <div>
-                <a href="https://fr.wikipedia.org/wiki/Pong">Pong</a>
-            </div>
-        </details>
+
+        {% if is_granted('ROLE_CLIENT') %}
+            <details class="collapsible-menu" style="display: inline-block; margin-right: 2rem;">
+                <summary>My Account</summary>
+                <div>
+                    <a href="{{ path('app_edit_account') }}">Modify my account</a>
+                </div>
+            </details>
+        {% elseif is_granted('ROLE_ADMIN') %}
+            <details class="collapsible-menu" style="display: inline-block; margin-right: 2rem;">
+                <summary>Extra</summary>
+                <div>
+                    <a href="https://fr.wikipedia.org/wiki/Pong">Pong</a>
+                </div>
+            </details>
+        {% endif %}
+
 
         <!-- Ce script permet d'assurer qu'un seul menu déroulant est ouvert à la fois.-->
         <script>

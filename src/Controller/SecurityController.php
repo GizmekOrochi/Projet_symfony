@@ -4,12 +4,13 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\CreateAccountType;
+use App\Form\ModifyAccountType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -22,7 +23,7 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
-            'error' => $error,
+            'error'         => $error,
         ]);
     }
 
@@ -39,6 +40,7 @@ class SecurityController extends AbstractController
         $form = $this->createForm(CreateAccountType::class, $user);
         $form->add('submit', SubmitType::class, ['label' => 'Create Account']);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $existingUser = $em->getRepository(User::class)->findOneBy(['login' => $user->getLogin()]);
             if ($existingUser) {
@@ -48,6 +50,7 @@ class SecurityController extends AbstractController
                 ]);
             }
             $user->setRoles(['ROLE_CLIENT']);
+            // Hash the password provided in the form
             $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
             $em->persist($user);
@@ -62,6 +65,44 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('security/create_account.html.twig', [
+            'myform' => $form->createView(),
+        ]);
+    }
+
+    #[Route(path: '/security/edit-account', name: 'app_edit_account')]
+    public function editAccount(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        // Get the currently logged-in user
+        /** @var User $user */
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException();
+        }
+
+        // Create the form using the ModifyAccountType form
+        $form = $this->createForm(ModifyAccountType::class, $user);
+        $form->add('submit', SubmitType::class, ['label' => 'Update Account']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Check if a new password was entered
+            $newPassword = $form->get('password')->getData();
+            if ($newPassword) {
+                $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
+                $user->setPassword($hashedPassword);
+            }
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', 'Account updated successfully!');
+            return $this->redirectToRoute('app_accueil');
+        }
+
+        if ($form->isSubmitted()) {
+            $this->addFlash('error', 'There were errors in your submission.');
+        }
+
+        return $this->render('security/edit_account.html.twig', [
             'myform' => $form->createView(),
         ]);
     }
