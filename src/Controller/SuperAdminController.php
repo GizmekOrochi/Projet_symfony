@@ -20,7 +20,6 @@ class SuperAdminController extends AbstractController
         $this->userRepository = $userRepository;
     }
 
-
     #[Route('/super-admin/users', name: 'super_admin_users')]
     public function listUsers(): Response
     {
@@ -29,7 +28,6 @@ class SuperAdminController extends AbstractController
             'users' => $users,
         ]);
     }
-
 
     #[Route('/super-admin/delete/{id}', name: 'super_admin_delete_user')]
     public function deleteUser(int $id): Response
@@ -45,7 +43,6 @@ class SuperAdminController extends AbstractController
         return $this->redirectToRoute('super_admin_users');
     }
 
-
     #[Route('/super-admin/promote/{id}', name: 'super_admin_promote_user')]
     public function promoteUser(int $id): Response
     {
@@ -57,6 +54,9 @@ class SuperAdminController extends AbstractController
 
         $roles = $user->getRoles();
         if (!in_array('ROLE_ADMIN', $roles, true)) {
+            // Remove the CLIENT role if it exists.
+            $roles = array_filter($roles, fn($role) => $role !== 'ROLE_CLIENT');
+            // Add the ADMIN role.
             $roles[] = 'ROLE_ADMIN';
             $user->setRoles($roles);
             $this->entityManager->flush();
@@ -66,7 +66,6 @@ class SuperAdminController extends AbstractController
         }
         return $this->redirectToRoute('super_admin_users');
     }
-
 
     #[Route('/super-admin/demote/{id}', name: 'super_admin_demote_user')]
     public function demoteUser(int $id): Response
@@ -79,14 +78,15 @@ class SuperAdminController extends AbstractController
         $roles = $user->getRoles();
         if (in_array('ROLE_ADMIN', $roles, true)) {
             $roles = array_filter($roles, fn($role) => $role !== 'ROLE_ADMIN');
+            if (!in_array('ROLE_CLIENT', $roles, true)) {
+                $roles[] = 'ROLE_CLIENT';
+            }
             $user->setRoles($roles);
             $this->entityManager->flush();
-            $this->addFlash('success', 'Le statut Admin a été retiré.');
+            $this->addFlash('success', 'Le statut Admin a été retiré et le rôle Client a été ajouté.');
         } else {
             $this->addFlash('info', 'Cet utilisateur n\'est pas Admin.');
         }
         return $this->redirectToRoute('super_admin_users');
     }
-
-
 }

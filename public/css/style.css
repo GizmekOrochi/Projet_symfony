@@ -27,7 +27,7 @@ body {
 }
 
 .top-nav {
-    background-color: #c1121f; /* rouge vif */
+    background-color: #c1121f;
     padding: 1rem 2rem;
     display: flex;
     align-items: center;
