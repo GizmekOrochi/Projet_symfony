@@ -12,23 +12,28 @@
     {% endblock %}
 </head>
 <body>
-{% include 'header.html.twig' %}
+<div class="wrapper">
+    {% include 'header.html.twig' %}
 
-{% block body %}
-    <div class="container">
-        {% if is_granted('ROLE_SUPER_ADMIN') %}
-            <div class="alert alert-info">
-                Welcome, Super Administrator!
+    <div class="content">
+        {% block body %}
+            <div class="container">
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <div class="alert alert-info">
+                        Welcome, Super Administrator!
+                    </div>
+                {% elseif is_granted('ROLE_ADMIN') %}
+                    <div class="alert alert-info">
+                        Welcome, Administrator!
+                    </div>
+                {% else %}
+                    <h1>Welcome to the "site de vente de football players"</h1>
+                {% endif %}
             </div>
-        {% elseif is_granted('ROLE_ADMIN') %}
-            <div class="alert alert-info">
-                Welcome, Administrator!
-            </div>
-        {% else %}
-            <h1>Welcome to the "site of vente de football player"</h1>
-        {% endif %}
+        {% endblock %}
     </div>
-{% endblock %}
 
+    {% include 'footer.html.twig' %}
+</div>
 </body>
 </html>

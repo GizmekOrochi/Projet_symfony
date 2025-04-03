@@ -72,20 +72,17 @@ class SecurityController extends AbstractController
     #[Route(path: '/security/edit-account', name: 'app_edit_account')]
     public function editAccount(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
     {
-        // Get the currently logged-in user
         /** @var User $user */
         $user = $this->getUser();
         if (!$user instanceof User) {
             throw $this->createAccessDeniedException();
         }
 
-        // Create the form using the ModifyAccountType form
         $form = $this->createForm(ModifyAccountType::class, $user);
         $form->add('submit', SubmitType::class, ['label' => 'Update Account']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Check if a new password was entered
             $newPassword = $form->get('password')->getData();
             if ($newPassword) {
                 $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
