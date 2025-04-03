@@ -63,7 +63,7 @@
     <!-- boutton de gauche connexion / deconnexion / panier -->
     <div class="nav-right">
         {% if app.user %}
-            <a href="{{ path('app_logout') }}">Déconnection</a>
+            <a href="{{ path('app_logout') }}">Disconnect</a>
         {% else %}
             <a href="{{ path('app_login') }}">Connection</a>
         {% endif %}
