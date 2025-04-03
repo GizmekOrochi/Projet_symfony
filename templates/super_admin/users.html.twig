@@ -21,7 +21,15 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.login }}</td>
                 <td>{{ user.name }}</td>
-                <td>{{ user.roles|join(', ') }}</td>
+                <td>
+                    {% set rolesWithoutUser = [] %}
+                    {% for role in user.roles %}
+                        {% if role != 'ROLE_USER' %}
+                            {% set rolesWithoutUser = rolesWithoutUser|merge([role]) %}
+                        {% endif %}
+                    {% endfor %}
+                    {{ rolesWithoutUser|join(', ') }}
+                </td>
                 <td>
                     {% if 'ROLE_SUPER_ADMIN' in user.roles %}
                         Super Admin

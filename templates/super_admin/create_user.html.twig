@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create User{% endblock %}
+
+{% block body %}
+    <h1>Create User</h1>
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <form method="post" action="{{ path('super_admin_create_user') }}">
+        <div>
+            <label for="login">Login:</label>
+            <input type="text" id="login" name="login" required>
+        </div>
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="country">Country (2-letter code):</label>
+            <input type="text" id="country" name="country" maxlength="2" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <label for="role">Role:</label>
+            <select id="role" name="role" required>
+                <option value="ROLE_CLIENT">Client</option>
+                <option value="ROLE_ADMIN">Admin</option>
+            </select>
+        </div>
+        <button type="submit">Create User</button>
+    </form>
+{% endblock %}
