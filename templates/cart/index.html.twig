@@ -22,6 +22,7 @@
                 <th>Value Money</th>
                 <th>Current Club</th>
                 <th>Current Role</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -39,6 +40,12 @@
             {% endfor %}
             </tbody>
         </table>
+
+        {% set total = 0 %}
+        {% for id, item in cart %}
+            {% set total = total + item.product.valueMoney %}
+        {% endfor %}
+        <p><strong>Total Money: {{ total }} €</strong></p>
 
         <a href="{{ path('app_cart_clear') }}" class="btn btn-warning">Clear Cart</a>
         <a href="{{ path('app_cart_purchase') }}" class="btn btn-success">Purchase</a>
